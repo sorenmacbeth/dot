@@ -114,6 +114,7 @@
                                        (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
                                        (eval-after-load "auto-complete"
                                          '(add-to-list 'ac-modes 'nrepl-mode))))
+                       (:name deft :type elpa)
                        (:name thrift-mode
                               :type git
                               :url "git://gist.github.com/2752706.git"
