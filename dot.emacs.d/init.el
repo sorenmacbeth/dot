@@ -114,7 +114,13 @@
                                        (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
                                        (eval-after-load "auto-complete"
                                          '(add-to-list 'ac-modes 'nrepl-mode))))
-                       (:name deft :type elpa)
+                       (:name deft
+                              :type elpa
+                              :after (progn
+                                       (setq deft-extension "txt")
+                                       (setq deft-directory "~/Dropbox/notes")
+                                       (setq deft-use-filename-as-title t)
+                                       (setq deft-text-mode 'markdown-mode)))
                        (:name thrift-mode
                               :type git
                               :url "git://gist.github.com/2752706.git"
@@ -168,7 +174,7 @@
   (el-get 'sync '(el-get package))
   (add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (setq my-packages (append '(color-theme-solarized auto-complete ac-slime) (mapcar 'el-get-source-name el-get-sources)))
+  (setq my-packages (append '(color-theme-solarized auto-complete ac-slime markdown-mode) (mapcar 'el-get-source-name el-get-sources)))
   (el-get 'sync my-packages))
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
