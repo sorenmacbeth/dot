@@ -42,6 +42,7 @@
                        (:name starter-kit-lisp :type elpa)
                        (:name starter-kit-eshell :type elpa)
                        (:name starter-kit-bindings :type elpa)
+                       (:name starter-kit-js :type elpa)
                        (:name paredit
                               :type elpa
                               :after (progn
@@ -84,7 +85,6 @@
                                        (require 'kibit-mode)
                                        (add-hook 'clojure-mode-hook 'kibit-mode)))
                        (:name gist :type elpa)
-                       (:name magithub :type elpa)
                        (:name pastebin :type elpa)
                        (:name exec-path-from-shell
                               :type elpa
@@ -115,12 +115,14 @@
                                        (eval-after-load "auto-complete"
                                          '(add-to-list 'ac-modes 'nrepl-mode))))
                        (:name deft
-                              :type elpa
+                              :type git
+                              :url "git://jblevins.org/git/deft.git"
+                              :load "deft.el"
                               :after (progn
-                                       (setq deft-extension "txt")
+                                       (require 'deft)
+                                       (setq deft-extension "org")
                                        (setq deft-directory "~/Dropbox/notes")
-                                       (setq deft-use-filename-as-title t)
-                                       (setq deft-text-mode 'markdown-mode)))
+                                       (setq deft-text-mode 'org-mode)))
                        (:name thrift-mode
                               :type git
                               :url "git://gist.github.com/2752706.git"
@@ -166,7 +168,11 @@
                                        (load-theme 'solarized-dark t)))
 		       (:name ac-slime
 			      :after (progn
-				       (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)))))
+				       (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)))
+                       (:name yasnippet
+                              :after (progn
+                                       (require 'yasnippet)
+                                       (yas-global-mode 1)))))
 
 (defun sync-packages ()
   "Synchronize packages"
@@ -174,7 +180,7 @@
   (el-get 'sync '(el-get package))
   (add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (setq my-packages (append '(color-theme-solarized auto-complete ac-slime markdown-mode) (mapcar 'el-get-source-name el-get-sources)))
+  (setq my-packages (append '(color-theme-solarized auto-complete ac-slime markdown-mode yasnippet auto-complete-yasnippet magithub) (mapcar 'el-get-source-name el-get-sources)))
   (el-get 'sync my-packages))
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -189,17 +195,6 @@
        (eval-print-last-sexp)
        (setq el-get-verbose t)
        (sync-packages)))))
-
-;; paredit stuff
-(defun paredit-wrap-round-from-behind ()
-  (interactive)
-  (forward-sexp -1)
-  (paredit-wrap-round)
-  (insert " ")
-  (forward-char -1))
-
-(define-key paredit-mode-map (kbd "M-)")
-  'paredit-wrap-round-from-behind)
 
 ;; start the server
 (server-start)
