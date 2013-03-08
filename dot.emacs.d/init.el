@@ -33,29 +33,18 @@
 (add-hook 'shell-mode-hook (setq comint-scroll-show-maximum-output t))
 
 ;; el-get
-
-(setq el-get-sources '((:name starter-kit
+(setq el-get-sources '((:name smex :type elpa)
+                       (:name ido-ubiquitous :type elpa)
+                       (:name find-file-in-project :type elpa)
+                       (:name paredit :type elpa)
+                       (:name starter-kit
                               :type elpa
                               :after (progn
-                                       (remove-hook 'prog-mode-hook 'esk-turn-on-idle-highlight-mode)
-                                       (add-hook 'prog-mode-hook 'auto-complete-mode)))
+                                       (remove-hook 'prog-mode-hook 'esk-turn-on-idle-highlight-mode)))
                        (:name starter-kit-lisp :type elpa)
-                       (:name starter-kit-eshell :type elpa)
                        (:name starter-kit-bindings :type elpa)
                        (:name starter-kit-js :type elpa)
-                       (:name paredit
-                              :type elpa
-                              :after (progn
-                                       (defun paredit-wrap-round-from-behind ()
-                                         (interactive)
-                                         (forward-sexp -1)
-                                         (paredit-wrap-round)
-                                         (insert " ")
-                                         (forward-char -1))
-
-                                       (define-key paredit-mode-map (kbd "M-)")
-                                         'paredit-wrap-round-from-behind)))
-                       (:name project-mode
+		       (:name project-mode
                               :type elpa
                               :after (progn
                                        (require 'project-mode)
@@ -67,11 +56,6 @@
                        (:name clojure-mode
 		       	      :type elpa
 		       	      :after (progn
-		       		       ;; colorize slime repl
-		       		       (add-hook 'slime-repl-mode-hook
-		       				 (defun clojure-mode-slime-font-lock ()
-		       				   (let (font-lock-mode)
-		       				     (clojure-mode-font-lock-setup))))
                                        (add-hook 'clojure-mode-hook 'clojure-project-mode)))
                        (:name clojure-test-mode :type elpa)
                        (:name midje-mode
@@ -79,13 +63,11 @@
                               :after (progn
                                        (add-hook 'clojure-mode-hook 'midje-mode)))
                        (:name kibit-mode
-                              :type git
-                              :url "https://github.com/aredington/kibit-mode.git"
+                              :type github
+                              :pkgname "aredington/kibit-mode"
                               :after (progn
                                        (require 'kibit-mode)
                                        (add-hook 'clojure-mode-hook 'kibit-mode)))
-                       (:name gist :type elpa)
-                       (:name pastebin :type elpa)
                        (:name exec-path-from-shell
                               :type elpa
                               :after (progn
@@ -96,22 +78,18 @@
                               :after (progn
                                        (require 'shell-here)
                                        (define-key (current-global-map) "\C-c!" 'shell-here)))
-                       (:name nrepl-ritz :type elpa)
                        (:name nrepl
                               :type elpa
                               :after (progn
                                        (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
                                        (add-hook 'nrepl-mode-hook 'paredit-mode)
-                                       ;; (add-hook 'nrepl-mode-hook
-                                       ;;           (defun nrepl-ritz-setup ()
-                                       ;;             (require 'nrepl-ritz)))
-                                       ))
+                                       (eval-after-load "auto-complete"
+                                         (add-hook 'nrepl-mode-hook 'auto-complete-mode))))
                        (:name ac-nrepl
                               :type elpa
                               :after (progn
                                        (require 'ac-nrepl)
                                        (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-                                       (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
                                        (eval-after-load "auto-complete"
                                          '(add-to-list 'ac-modes 'nrepl-mode))))
                        (:name deft
@@ -134,9 +112,8 @@
                               :url "git://gist.github.com/2785206.git"
                               :load "ercstuff.el")
                        (:name no-easy-keys
-                              :type git
-                              :url "git://github.com/danamlund/emacs-no-easy-keys.git"
-                              :load "no-easy-keys.el"
+                              :type github
+                              :pkgname "danamlund/emacs-no-easy-keys"
                               :after (progn
                                        (require 'no-easy-keys)
                                        (no-easy-keys 1)))
@@ -147,9 +124,8 @@
                               :after (progn
                                        (require 'ham-mode)))
                        (:name multiple-cursors
-                              :type git
-                              :url "git://github.com/magnars/multiple-cursors.el"
-                              :load "multiple-cursors.el"
+                              :type github
+                              :pkgname "magnars/multiple-cursors.el"
                               :after (progn
                                        (require 'multiple-cursors)
                                        (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -157,18 +133,27 @@
                                        (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
                                        (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
                        (:name expand-region
-                              :type git
-                              :url "git://github.com/magnars/expand-region.el"
-                              :load "expand-region.el"
+                              :type github
+                              :pkgname "magnars/expand-region.el"
                               :after (progn
                                        (require 'expand-region)
                                        (global-set-key (kbd "C-@") 'er/expand-region)))
+                       (:name vc-browse
+                              :type github
+                              :pkgname "sorenmacbeth/vc-browse"
+                              :after (progn
+                                       (require 'vc-browse)))
+                       (:name scala-mode2
+                              :type github
+                              :pkgname "hvesalai/scala-mode2"
+                              :after (progn
+                                       (require 'scala-mode2)))
+                       (:name auto-complete
+                              :after (progn
+                                       (add-hook 'clojure-mode-hook 'auto-complete-mode)))
                        (:name color-theme-solarized
                               :after (progn
                                        (load-theme 'solarized-dark t)))
-		       (:name ac-slime
-			      :after (progn
-				       (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)))
                        (:name yasnippet
                               :after (progn
                                        (require 'yasnippet)
@@ -178,9 +163,7 @@
   "Synchronize packages"
   (interactive)
   (el-get 'sync '(el-get package))
-  (add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
-  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (setq my-packages (append '(color-theme-solarized auto-complete ac-slime markdown-mode yasnippet auto-complete-yasnippet magithub) (mapcar 'el-get-source-name el-get-sources)))
+  (setq my-packages (append '(color-theme-solarized auto-complete markdown-mode yasnippet auto-complete-yasnippet magithub haskell-mode ghc-mod) (mapcar 'el-get-source-name el-get-sources)))
   (el-get 'sync my-packages))
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
