@@ -70,8 +70,10 @@ export EC2_HOME="/usr/local/Library/LinkedKegs/ec2-api-tools/jars"
 
 alias e="/usr/local/bin/emacsclient --no-wait"
 
+alias git=hub
+
 function power_tail() { tail -f $1 | perl -pe "s/$2/\e[3;35;40m$&\e[0m/g"; }
 
-function yb_emr_proxy() { ssh -i /path/to/key.pem -f -N -D 6666 -o StrictHostKeyChecking=no -o "ConnectTimeout=10" -o "ServerAliveInterval=60" -o "ControlPath=none" hadoop@$1; }
+function yb_emr_proxy() { ssh -i ~/.ssh/id_rsa-ybot-awskey -f -N -D 6666 -o StrictHostKeyChecking=no -o "ConnectTimeout=10" -o "ServerAliveInterval=60" -o "ControlPath=none" hadoop@$1; }
 
 function yb_emr_ssh() { ssh -i path/to/key.pem -o StrictHostKeyChecking=no -o ServerAliveInterval=60 hadoop@$1; }
