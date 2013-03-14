@@ -33,11 +33,7 @@
 (add-hook 'shell-mode-hook (setq comint-scroll-show-maximum-output t))
 
 ;; el-get
-(setq el-get-sources '((:name smex :type elpa)
-                       (:name ido-ubiquitous :type elpa)
-                       (:name find-file-in-project :type elpa)
-                       (:name paredit :type elpa)
-                       (:name starter-kit
+(setq el-get-sources '((:name starter-kit
                               :type elpa
                               :after (progn
                                        (remove-hook 'prog-mode-hook 'esk-turn-on-idle-highlight-mode)))
