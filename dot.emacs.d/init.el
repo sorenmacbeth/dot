@@ -10,7 +10,7 @@
 (pending-delete-mode t)
 
 ;; set font
-(set-frame-font "DejaVu Sans Mono-9")
+(set-frame-font "DejaVu Sans Mono-10")
 
 ;; utf-8
 (prefer-coding-system 'utf-8-unix)
@@ -54,16 +54,6 @@
 		       	      :after (progn
                                        (add-hook 'clojure-mode-hook 'clojure-project-mode)))
                        (:name clojure-test-mode :type elpa)
-                       (:name midje-mode
-                              :type elpa
-                              :after (progn
-                                       (add-hook 'clojure-mode-hook 'midje-mode)))
-                       (:name kibit-mode
-                              :type github
-                              :pkgname "aredington/kibit-mode"
-                              :after (progn
-                                       (require 'kibit-mode)
-                                       (add-hook 'clojure-mode-hook 'kibit-mode)))
                        (:name exec-path-from-shell
                               :type elpa
                               :after (progn
