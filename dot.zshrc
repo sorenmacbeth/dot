@@ -70,7 +70,7 @@ export EC2_HOME="/usr/local/Library/LinkedKegs/ec2-api-tools/jars"
 
 # keychain
 
-eval `/usr/local/bin/keychain --eval id_rsa B48F7899`
+eval `/usr/local/bin/keychain --eval`
 
 alias e="/usr/local/bin/emacsclient --no-wait"
 
