@@ -40,30 +40,25 @@
                        (:name starter-kit-lisp :type elpa)
                        (:name starter-kit-bindings :type elpa)
                        (:name starter-kit-js :type elpa)
-		       (:name project-mode
-                              :type elpa
-                              :after (progn
-                                       (require 'project-mode)
-                                       (project-load-all)))
-                       (:name clojure-project-mode
-                              :type elpa
-                              :after (progn
-                                       (require 'clojure-project-mode)))
-                       (:name clojure-mode
-		       	      :type elpa
-		       	      :after (progn
-                                       (add-hook 'clojure-mode-hook 'clojure-project-mode)))
+                       (:name clojure-mode :type elpa)
                        (:name clojure-test-mode :type elpa)
                        (:name exec-path-from-shell
                               :type elpa
                               :after (progn
                                        (when (memq window-system '(mac ns))
                                          (exec-path-from-shell-initialize))))
+                       (:name midje-mode :type elpa)
                        (:name shell-here
                               :type elpa
                               :after (progn
                                        (require 'shell-here)
                                        (define-key (current-global-map) "\C-c!" 'shell-here)))
+                       (:name nrepl-ritz
+                              :type elpa
+                              :after (progn
+                                       (add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
+                                       (defun my-nrepl-mode-setup ()
+                                         (require 'nrepl-ritz))))
                        (:name nrepl
                               :type elpa
                               :after (progn
