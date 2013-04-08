@@ -53,12 +53,12 @@
                               :after (progn
                                        (require 'shell-here)
                                        (define-key (current-global-map) "\C-c!" 'shell-here)))
-                       (:name nrepl-ritz
-                              :type elpa
-                              :after (progn
-                                       (add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
-                                       (defun my-nrepl-mode-setup ()
-                                         (require 'nrepl-ritz))))
+                       ;; (:name nrepl-ritz
+                       ;;        :type elpa
+                       ;;        :after (progn
+                       ;;                 (add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
+                       ;;                 (defun my-nrepl-mode-setup ()
+                       ;;                   (require 'nrepl-ritz))))
                        (:name nrepl
                               :type elpa
                               :after (progn
