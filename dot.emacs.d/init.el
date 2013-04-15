@@ -3,9 +3,6 @@
 ;; splat as meta
 (setq ns-command-modifier 'meta)
 
-;; toggle fullscreen
-(global-set-key (kbd "M-RET") 'ns-toggle-fullscreen)
-
 ;; delete words under active region
 (pending-delete-mode t)
 
@@ -32,6 +29,7 @@
 (add-hook 'shell-mode-hook (setq comint-scroll-to-bottom-on-input t))
 (add-hook 'shell-mode-hook (setq comint-scroll-show-maximum-output t))
 
+(package-initialize)
 ;; el-get
 (setq el-get-sources '((:name starter-kit
                               :type elpa
@@ -144,7 +142,17 @@
   "Synchronize packages"
   (interactive)
   (el-get 'sync '(el-get package))
-  (setq my-packages (append '(color-theme-solarized auto-complete markdown-mode yasnippet auto-complete-yasnippet magithub haskell-mode ghc-mod) (mapcar 'el-get-source-name el-get-sources)))
+  (add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (setq my-packages (append '(color-theme-solarized
+                              auto-complete
+                              markdown-mode
+                              yasnippet
+                              auto-complete-yasnippet
+                              magithub
+                              haskell-mode
+                              ghc-mod)
+                            (mapcar 'el-get-source-name el-get-sources)))
   (el-get 'sync my-packages))
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
