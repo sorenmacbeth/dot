@@ -29,7 +29,6 @@
 (add-hook 'shell-mode-hook (setq comint-scroll-to-bottom-on-input t))
 (add-hook 'shell-mode-hook (setq comint-scroll-show-maximum-output t))
 
-(package-initialize)
 ;; el-get
 (setq el-get-sources '((:name starter-kit
                               :type elpa
