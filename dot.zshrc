@@ -35,10 +35,19 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
+export TERM=xterm-256color
+
 export JAVA_HOME=$(/usr/libexec/java_home)
 
 # ybot dev
 source $HOME/ybotdev.bash
+
+export LEIN_USERNAME=$AWS_ACCESS_KEY_ID
+export LEIN_PASSPHRASE=$AWS_SECRET_ACCESS_KEY
+
+export AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID
+export AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
+
 
 # homebrew
 export PATH=/usr/local/bin:$PATH
@@ -48,6 +57,9 @@ export PATH=$PATH:/usr/local/share/python
 
 # home bin
 export PATH=$PATH:~/bin
+
+# npm bin lol
+export PATH=$PATH:/usr/local/share/npm/bin
 
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python2.7
@@ -61,7 +73,11 @@ else
     echo "WARNING: Can't find virtualenvwrapper.sh"
 fi
 
-[[ -s "/Users/soren/.rvm/scripts/rvm" ]] && source "/Users/soren/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# chruby lol
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+
+chruby ruby-1.9.3
 
 # ec2 api tools
 export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.ec2/pk-*.pem | /usr/bin/head -1)"
@@ -72,7 +88,7 @@ alias e="/usr/local/bin/emacsclient --no-wait"
 
 function power_tail() { tail -f $1 | perl -pe "s/$2/\e[3;35;40m$&\e[0m/g"; }
 
-function yb_emr_proxy() { ssh -i $1 -f -N -D 6666 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o "ConnectTimeout=10" -o "ServerAliveInterval=60" -o "ControlPath=none" hadoop@$2; }
+function yb_emr_proxy() { ssh -i $1 -f -N -D 6667 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o "ConnectTimeout=10" -o "ServerAliveInterval=60" -o "ControlPath=none" hadoop@$2; }
 
 function yb_emr_ssh() { ssh -i $1 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ServerAliveInterval=60 hadoop@$2; }
 
