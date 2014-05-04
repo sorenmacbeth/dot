@@ -12,10 +12,10 @@ binfile = home + "/bin"
 
 def symlink_dotfiles():
 	for dotfile in glob.glob("./dot.*"):
-		barename = dotfile[2:] 
+		barename = dotfile[2:]
 		destname = barename[3:]
 		destfile = home + "/" + destname
-		# backup existing dotfiles to 
+		# backup existing dotfiles to
 		if(os.path.lexists(destfile)):
 			if(os.path.islink(destfile) and os.path.realpath(destfile) == os.path.realpath(barename)):
 				print "Skipping " + barename + ", symlink already exists"
@@ -31,13 +31,13 @@ def symlink_bin():
 		barename = b[6:]
 		sourcefile = os.path.realpath(b)
 		destfile = home + "/bin/" + barename
-		if(os.path.lexists(destfile)): 
+		if(os.path.lexists(destfile)):
 			if(os.path.islink(destfile) and os.path.realpath(destfile) == sourcefile):
 				print "Skipping " + barename + ", symlink already exists"
 			elif(not os.path.islink(destfile)):
 				print "Backing up " + destfile + " to " + dotfile_backup + "/" + barename
 				os.rename(destfile, dotfile_backup + "/" + barename)
-		if(not os.path.lexists(destfile)):	
+		if(not os.path.lexists(destfile)):
 			print "Creating symlink ~/" + barename + " -> " + os.path.realpath(barename)
 			os.symlink(sourcefile, destfile)
 
@@ -48,7 +48,15 @@ def setup_oh_my_zsh():
 		print "Skipping oh-my-zsh clone, ~/.oh-my-zsh already exists. Rebasing repo on master."
 		os.system("cd ~/.oh-my-zsh && git pull --rebase origin master")
 	else:
-		os.system("curl -L https://github.com/sorenmacbeth/oh-my-zsh/raw/master/tools/install.sh | sh")
+		os.system("curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh")
+
+def setup_emacs_prelude():
+        """Setup emacs-prelude"""
+        if(os.path.lexists(home + "/.emacs.d")):
+                print "Skipping emacs-prelude clone, ~/.emacs.d already exists. Rebasing repo on master."
+                os.system("cd ~/.emacs.d && git pull --rebase origin master")
+        else:
+                os.system("curl -L https://github.com/bbatsov/prelude/raw/master/utils/installer.sh | sh")
 
 
 if __name__ == "__main__":
@@ -57,5 +65,6 @@ if __name__ == "__main__":
 	if(not os.path.lexists(dotfile_backup)):
 		os.mkdir(dotfile_backup)
 	setup_oh_my_zsh()
+        setup_emacs_prelude()
 	symlink_dotfiles()
 	symlink_bin()
