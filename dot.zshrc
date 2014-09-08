@@ -93,3 +93,78 @@ function yb_emr_proxy() { ssh -i $1 -f -N -D 6667 -o UserKnownHostsFile=/dev/nul
 function yb_emr_ssh() { ssh -i $1 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ServerAliveInterval=60 hadoop@$2; }
 
 function yb_emr_remote_repl() { ssh -i $1 -f -N -L$2:$3:$2 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o ServerAliveInterval=60 -o ControlPath=none hadoop@$3; }
+
+# ssh tunnels
+
+function mktunnel {
+    if [[ $* == '' ]] || [[ $1 == '-h' ]]; then
+                echo 'Usage: mktunnel LOCALPORT REMOTEPORT REMOTEHOST'
+        else
+                ssh -fCNL $1:localhost:$2 $3;
+        fi
+}
+ 
+function lstunnel { 
+    if [[ $1 == '-h' ]]; then
+                echo 'Usage: lstunnel [REGEX]'
+        else
+                count=1
+                pgrep -fl "ssh -fCNL $*" | cut -f2- -d ' ' | while read LINE; do
+                    echo $count: $LINE;
+                    count=`expr $count + 1`;
+                done
+        fi      
+}
+ 
+function rmtunnel {
+    if [[ $* == '' ]] || [[ $1 == '-h' ]]; then
+                echo 'Usage: rmtunnel N [REGEX]'
+        else
+                count=1
+                pgrep -f "ssh -fCNL $2" | while read LINE; do
+                    if [[ $1 == $count ]]; then
+                                kill -9 $LINE;
+                                break
+                        fi
+                        count=`expr $count + 1`;
+                done
+        fi
+}
+
+# ssh proxies
+
+function mkproxy {
+    if [[ $* == '' ]] || [[ $1 == '-h' ]]; then
+                echo 'Usage: mkproxy LOCALPORT REMOTEHOST'
+        else
+                ssh -fCND $1 $2;
+        fi
+}
+ 
+function lsproxy { 
+    if [[ $1 == '-h' ]]; then
+                echo 'Usage: lsproxy [REGEX]'
+        else
+                count=1
+                pgrep -fl "ssh -fCND $*" | cut -f2- -d ' ' | while read LINE; do
+                    echo $count: $LINE;
+                    count=`expr $count + 1`;
+                done
+        fi      
+}
+ 
+function rmproxy {
+    if [[ $* == '' ]] || [[ $1 == '-h' ]]; then
+                echo 'Usage: rmproxy N [REGEX]'
+        else
+                count=1
+                pgrep -f "ssh -fCND $2" | while read LINE; do
+                    if [[ $1 == $count ]]; then
+                                kill -9 $LINE;
+                                break
+                        fi
+                        count=`expr $count + 1`;
+                done
+        fi
+}
+
