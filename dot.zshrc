@@ -84,6 +84,10 @@ export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.ec2/pk-*.pem | /usr/bin/head -1)"
 export EC2_CERT="$(/bin/ls "$HOME"/.ec2/cert-*.pem | /usr/bin/head -1)"
 export EC2_HOME="/usr/local/Library/LinkedKegs/ec2-api-tools/jars"
 
+# go stuff
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH
+
 alias e="/usr/local/bin/emacsclient --no-wait"
 
 function power_tail() { tail -f $1 | perl -pe "s/$2/\e[3;35;40m$&\e[0m/g"; }
@@ -100,7 +104,7 @@ function mktunnel {
     if [[ $* == '' ]] || [[ $1 == '-h' ]]; then
                 echo 'Usage: mktunnel LOCALPORT REMOTEPORT REMOTEHOST'
         else
-                ssh -fCNL $1:localhost:$2 $3;
+                ssh -fCNL $1\:localhost\:$2 $3;
         fi
 }
  
