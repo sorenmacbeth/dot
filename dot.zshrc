@@ -35,61 +35,15 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
-export TERM=xterm-256color
-
-export JAVA_HOME=$(/usr/libexec/java_home)
-
-# ybot dev
-source $HOME/ybotdev.bash
-
-export LEIN_USERNAME=$AWS_ACCESS_KEY_ID
-export LEIN_PASSPHRASE=$AWS_SECRET_ACCESS_KEY
-
-export AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID
-export AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
-
-# homebrew
-export PATH=/usr/local/bin:$PATH
-
-# home bin
-export PATH=$PATH:~/bin
-
-# npm bin lol
-export PATH=$PATH:/usr/local/share/npm/bin
-
-# homebrew python
-#export PATH=$PATH:/usr/local/share/python
-
-#export WORKON_HOME=$HOME/.virtualenvs
-#export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python2.7
-#export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-#export PIP_VIRTUALENV_BASE=$WORKON_HOME
-#export PIP_RESPECT_VIRTUALENV=true
-
-#if [[ -r /usr/local/share/python/virtualenvwrapper.sh ]]; then
-#    source /usr/local/share/python/virtualenvwrapper.sh
-#else
-#    echo "WARNING: Can't find virtualenvwrapper.sh"
-#fi
-
-# chruby lol
-#source /usr/local/opt/chruby/share/chruby/chruby.sh
-#source /usr/local/opt/chruby/share/chruby/auto.sh
-
-#chruby ruby-1.9.3
-
-# ec2 api tools
-#export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.ec2/pk-*.pem | /usr/bin/head -1)"
-#export EC2_CERT="$(/bin/ls "$HOME"/.ec2/cert-*.pem | /usr/bin/head -1)"
-#export EC2_HOME="/usr/local/Library/LinkedKegs/ec2-api-tools/jars"
-
-# go stuff
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH
-
 alias e="/usr/local/bin/emacsclient --no-wait"
 
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+
+# alias python=/usr/local/bin/python3
+# alias pip=/usr/local/bin/pip3
+
 function power_tail() { tail -f $1 | perl -pe "s/$2/\e[3;35;40m$&\e[0m/g"; }
+
 
 # ssh tunnels
 
@@ -164,3 +118,13 @@ function rmproxy {
         done
     fi
 }
+
+function cbsave {
+    if [[ $* == '' ]] || [[ $1 == '-h' ]]; then
+        echo 'Usage: cbsave channel output-path'
+    else
+        today=`date +"%m_%d_%Y"`
+        streamlink -o $2/$1-$today.mpg https://chaturbate.com/$1 best;
+    fi
+}
+
